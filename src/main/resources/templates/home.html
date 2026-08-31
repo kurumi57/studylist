@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学習管理アプリケーション</title>
+  <link th:href="@{/home.css}" rel="stylesheet">
+</head>
+<body>
+<h1>学習管理アプリケーション</h1>
+
+<div class="study_form">
+  <h2>&lt;学習の記録&gt;</h2>
+
+  <form action="/add">
+    <label>学習日</label>
+    <input name="date" type="date" />
+    <label>学習内容</label>
+    <input name="content" type="text" />
+    <label>学習時間</label>
+    <input name="time" type="number" class="time-input" />
+    <button type="submit">登録</button>
+  </form>
+</div>
+
+<div class="studylist">
+  <h2>&lt;学習一覧&gt;</h2>
+  <table border="1" style="border-collapse: collapse;">
+    <thead>
+    <tr><th class="hidden">ID</th><th>学習日</th><th>学習内容</th><th>学習時間</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="study : ${studyList}">
+    <td class="hidden" th:text="${study.id}"></td>
+    <td width="100px" th:text="${study.date}"></td>
+    <td th:text="${study.content}"></td>
+    <td width="100px" th:text="${study.time}"></td>
+      <td width="50px">
+        <button type="submit" id="update_button" onclick="
+        let row = this.parentElement.parentElement;
+        getElementById('update_id').value=row.cells[0].firstChild.data;
+        getElementById('update_date').value=row.cells[1].firstChild.data;
+        getElementById('update_content').value=row.cells[2].firstChild.data;
+        getElementById('update_time').value=row.cells[3].firstChild.data;
+        var dialog = getElementById('updateDialog');
+        dialog.style.left = ((window.innerWidth - 500) / 2) + 'px';
+        dialog.style.display = 'block';
+        ">更新</button>
+      </td>
+      <td width="50px">
+        <form action="/delete">
+          <button type="submit" id="delete_button">削除</button>
+          <input type="hidden" name="id" th:value="${study.id}" />
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div id="updateDialog">
+  <div class="study_form">
+    <h2>学習の更新</h2>
+    <form action="/update">
+      <input id="update_id" name="id" type="hidden" />
+      <label>学習日</label>
+      <input id="update_date" name="date" type="date" />
+      <label>学習内容</label>
+      <input id="update_content" name="content" type="text" />
+      <label>学習時間</label>
+      <input id="update_time" name="time" type="number" />
+      <div>
+        <button type="submit">更新</button>
+        <button type="reset"
+                onclick="getElementById('updateDialog').style.display='none';">キャンセル</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
