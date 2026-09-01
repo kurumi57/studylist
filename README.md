@@ -18,3 +18,7 @@ Spring Bootを使用して作成した、学習記録を管理するWebアプリ
 - HTML
 - CSS
 - Maven
+
+## 画面イメージ
+
+![学習管理アプリケーションの画面](images/studylist.png)
