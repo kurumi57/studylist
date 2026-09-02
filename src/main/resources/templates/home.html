@@ -17,7 +17,14 @@
     <label>学習内容</label>
     <input name="content" type="text" />
     <label>学習時間</label>
-    <input name="time" type="number" class="time-input" />
+    <input id="studyTime" name="time" type="number" class="time-input" />
+
+    <p id="studyTimeDisplay"></p>
+
+    <button type="button" id="startButton">スタート</button>
+    <button type="button" id="finishButton">ストップ</button>
+    <button type="button" id="clearButton">クリア</button>
+    <p id="timerStatus"></p>
     <button type="submit">登録</button>
   </form>
 </div>
@@ -75,6 +82,37 @@
     </form>
   </div>
 </div>
+<script>
+  let startTime;
+  let finishTime;
 
+  document.getElementById("startButton").addEventListener("click", function() {
+  startTime = new Date();
+
+  document.getElementById("timerStatus").textContent = "計測中...";
+  });
+
+  document.getElementById("finishButton").addEventListener("click", function () {
+    finishTime = new Date();
+
+  let elapsedTime = finishTime - startTime;
+  let studyTime = (elapsedTime / 1000 / 60 / 60).toFixed(2);
+
+  let minutes = Math.floor(elapsedTime / 1000 / 60);
+  let seconds = Math.floor(elapsedTime / 100 % 60);
+
+  document.getElementById("studyTimeDisplay").textContent = minutes + "分" + seconds + "秒";
+
+  document.getElementById("studyTime").value = studyTime;
+
+  document.getElementById("timerStatus").textContent = "";
+
+  document.getElementById("clearButton").addEventListener("click", function() {
+    document.getElementById("studyTimeDisplay").textContent = "";
+    document.getElementById("studyTime").value = "";
+  })
+  });
+
+</script>
 </body>
 </html>
