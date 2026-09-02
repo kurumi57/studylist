@@ -19,13 +19,14 @@
     <label>学習時間</label>
     <input id="studyTime" name="time" type="number" class="time-input" />
 
-    <p id="studyTimeDisplay"></p>
-
+<div class="timer-buttons">
     <button type="button" id="startButton">スタート</button>
     <button type="button" id="finishButton">ストップ</button>
     <button type="button" id="clearButton">クリア</button>
     <p id="timerStatus"></p>
-    <button type="submit">登録</button>
+  <p id="studyTimeDisplay"></p>
+</div>
+    <button type="submit" class="register-button">登録</button>
   </form>
 </div>
 
@@ -106,12 +107,15 @@
   document.getElementById("studyTime").value = studyTime;
 
   document.getElementById("timerStatus").textContent = "";
+  });
 
   document.getElementById("clearButton").addEventListener("click", function() {
+    startTime = null;
+    finishTime = null;
     document.getElementById("studyTimeDisplay").textContent = "";
     document.getElementById("studyTime").value = "";
+    document.getElementById("timerStatus").textContent = "";
   })
-  });
 
 </script>
 </body>

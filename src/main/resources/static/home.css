@@ -26,6 +26,16 @@ input {
 .study_form input[type="date"], select {
     width:150px
 }
+.timer-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    grid-column: 2;
+}
+.register-button {
+    width: 150px;
+    grid-column: 2;
+}
 
 /*学習一覧*/
 .studylist table {
