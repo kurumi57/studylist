@@ -20,6 +20,19 @@ public class HomeController {
         this.dao = dao;
     }
     record StudyItem(String id, LocalDate date, String content, Double time) {
+        public String formattedTime() {
+            int totalMinutes = (int) Math.round(time * 60);
+            int hours = totalMinutes / 60;
+            int minutes = totalMinutes % 60;
+
+            if (hours > 0 && minutes > 0) {
+                return hours + "時間" + minutes + "分";
+            } else if (hours > 0) {
+                return hours + "時間";
+            } else {
+                return minutes + "分";
+            }
+        }
     }
     private List<StudyItem> studyItems = new ArrayList<>();
 
