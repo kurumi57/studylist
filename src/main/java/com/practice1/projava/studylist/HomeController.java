@@ -69,4 +69,8 @@ public String showStudyList(Model model) {
         dao.update(studyItem);
         return "redirect:/list";
 }
+@GetMapping("/login")
+    public String showLogin() {
+        return "login";
+}
 }
