@@ -9,6 +9,11 @@ input {
 .hidden {
     display: none;
 }
+.logout-form {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}
 
 /*タスク入力フォーム*/
 .study_form {

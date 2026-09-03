@@ -8,6 +8,10 @@
 <body>
 <h1>学習管理アプリケーション</h1>
 
+<form th:action="@{/logout}" method="post" class="logout-form">
+  <button type="submit">ログアウト</button>
+</form>
+
 <div class="study_form">
   <h2>&lt;学習の記録&gt;</h2>
 
