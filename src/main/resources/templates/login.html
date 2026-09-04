@@ -8,6 +8,10 @@
 
 <h1>ログイン</h1>
 
+<p th:if="${param.error}">
+    ユーザー名またはパスワードが正しくありません
+</p>
+
 <form th:action="@{/login}" method="post">
 
 <label>ユーザー名</label>
