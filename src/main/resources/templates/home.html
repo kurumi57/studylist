@@ -8,6 +8,10 @@
 <body>
 <h1>学習管理アプリケーション</h1>
 
+<p class="login-user">
+ログイン中：<span th:text="${username}"></span>
+</p>
+
 <form th:action="@{/logout}" method="post" class="logout-form">
   <button type="submit">ログアウト</button>
 </form>

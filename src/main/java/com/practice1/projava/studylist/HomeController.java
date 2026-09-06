@@ -42,6 +42,7 @@ public String showStudyList(Model model, Authentication authentication) {
         String username = authentication.getName();
         List<StudyItem> studyItems = dao.findByUsername(username);
     model.addAttribute("studyList", studyItems);
+    model.addAttribute("username", username);
     return "home";
     }
 
