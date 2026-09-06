@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.Authentication;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class HomeController {
     HomeController(StudyListDao dao) {
         this.dao = dao;
     }
-    record StudyItem(String id, LocalDate date, String content, Double time) {
+    record StudyItem(String id, LocalDate date, String content, Double time, String username) {
         public String formattedTime() {
             int totalMinutes = (int) Math.round(time * 60);
             int hours = totalMinutes / 60;
@@ -37,8 +38,9 @@ public class HomeController {
     private List<StudyItem> studyItems = new ArrayList<>();
 
     @GetMapping ("/list")
-public String showStudyList(Model model) {
-        List<StudyItem> studyItems = dao.findAll();
+public String showStudyList(Model model, Authentication authentication) {
+        String username = authentication.getName();
+        List<StudyItem> studyItems = dao.findByUsername(username);
     model.addAttribute("studyList", studyItems);
     return "home";
     }
@@ -46,26 +48,35 @@ public String showStudyList(Model model) {
 @GetMapping("/add")
     String addRecord(@RequestParam("date") String date,
     @RequestParam("content") String content,
-    @RequestParam("time") String time) {
+    @RequestParam("time") String time,
+        Authentication authentication) {
+    String username = authentication .getName();
+
         String id = UUID.randomUUID().toString().substring(0, 8);
     LocalDate parsedDate = LocalDate.parse(date);
     Double parsedTime = Double.parseDouble(time);
-    StudyItem item = new StudyItem(id, parsedDate, content, parsedTime);
+    StudyItem item = new StudyItem(id, parsedDate, content, parsedTime, username);
         dao.add(item);
 
         return "redirect:/list";
 }
 @GetMapping("/delete")
-    String deleteItem(@RequestParam("id") String id) {
-        dao.delete(id);
+    String deleteItem(@RequestParam("id") String id,
+        Authentication authentication) {
+
+        String username = authentication.getName();
+
+        dao.delete(id, username);
         return "redirect:/list";
 }
 @GetMapping("/update")
     String updateItem(@RequestParam("id") String id,
                       @RequestParam("date") LocalDate date,
                       @RequestParam("content") String content,
-                      @RequestParam("time") Double time) {
-        StudyItem studyItem = new StudyItem(id, date, content, time);
+                      @RequestParam("time") Double time,
+        Authentication authentication) {
+        String username = authentication.getName();
+        StudyItem studyItem = new StudyItem(id, date, content, time, username);
         dao.update(studyItem);
         return "redirect:/list";
 }
