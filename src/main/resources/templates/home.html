@@ -31,7 +31,7 @@
             <label class="form-label">学習内容</label>
             <input name="content" type="text" class="form-control"/>
             <label class="form-label">学習時間(分)</label>
-            <input id="studyMinutes" type="number" min="1" step="1" class="form-control time-input"/>
+            <input id="studyMinutes" type="number" min="0" step="1" class="form-control time-input"/>
             <input id="studyTime" name="time" type="hidden"/>
 
             <div class="timer-buttons">
@@ -102,7 +102,7 @@
                 <label class="form-label">学習内容</label>
                 <input id="update_content" name="content" type="text" class="form-control"/>
                 <label class="form-label">学習時間(分)</label>
-                <input id="update_minutes" type="number" min="1" step="1" class="form-control"/>
+                <input id="update_minutes" type="number" min="0" step="1" class="form-control"/>
                 <input id="update_time" name="time" type="hidden"/>
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">更新</button>
@@ -131,6 +131,7 @@
 
         document.getElementById("startButton").addEventListener("click", function () {
             startTime = new Date();
+            finishTime = null;
 
             document.getElementById("studyMinutes").value = "";
             document.getElementById("studyTime").value = "";
@@ -140,6 +141,16 @@
         });
 
         document.getElementById("finishButton").addEventListener("click", function () {
+
+            if (!startTime) {
+                document.getElementById("timerStatus").textContent = "先にスタートを押してください";
+                return;
+            }
+
+            if (finishTime) {
+                return;
+            }
+
             finishTime = new Date();
 
             let elapsedTime = finishTime - startTime;
