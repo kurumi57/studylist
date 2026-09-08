@@ -1,27 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ログイン | 学習管理アプリケーション</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+<div class="container">
+    <div class="card p-4 mx-auto mt-5 col-12 col-md-6">
+        <h1 class="text-center mb-4">ログイン</h1>
+        <div th:if="${param.error}" class="alert alert-danger">
+            ユーザー名またはパスワードが正しくありません
+        </div>
+        <form th:action="@{/login}" method="post">
 
-<h1>ログイン</h1>
+            <div class="mb-3">
+                <label>ユーザー名</label>
+                <input type="text" name="username" class="form-control form-label">
+            </div>
 
-<p th:if="${param.error}">
-    ユーザー名またはパスワードが正しくありません
-</p>
+            <div class="mb-3">
+                <label>パスワード</label>
+                <input type="password" name="password" class="form-control form-rabel">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">ログイン</button>
 
-<form th:action="@{/login}" method="post">
+            <p class="text-center mt-3">
+                アカウントをお持ちでない方は
+                <a th:href="@{/register}">新規登録はこちら</a>
+            </p>
 
-<label>ユーザー名</label>
-<input type="text" name="username">
-
-<label>パスワード</label>
-<input type="password" name="password">
-
-    <button type="submit">ログイン</button>
-
-</form>
+        </form>
+    </div>
+</div>
 </body>
 </html>

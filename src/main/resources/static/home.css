@@ -1,66 +1,68 @@
 /*共通項目*/
 body {
-    margin: 30px;
     color: #283655;
 }
-input {
-    border: 1px solid;
-}
+
 .hidden {
     display: none;
 }
+
 .login-user {
-    position: absolute;
-    top: 10px;
-    right: 30px;
-}
-.logout-form {
-    position: absolute;
-    top: 50px;
-    right: 30px;
+    margin: 0;
 }
 
-/*タスク入力フォーム*/
-.study_form {
-    padding: 0px 10px 10px 10px;
-    border: 1px solid #4D648D;
-}
+/*学習入力フォーム*/
 .study_form form {
     display: grid;
     grid-template-columns: 100px 1fr;
     row-gap: 10px;
 }
+
 .time-input {
     width: 150px;
 }
-.study_form input[type="date"], select {
-    width:150px
+
+.study_form input[type="date"] {
+    width: 150px;
 }
+
 .timer-buttons {
     display: flex;
     gap: 10px;
     align-items: center;
     grid-column: 2;
 }
+
 .register-button {
     width: 150px;
     grid-column: 2;
 }
 
 /*学習一覧*/
-.studylist table {
-    width: 100%;
-    border: 1px solid;
-    border-collapse: collapse;
+.studylist button {
+    white-space: nowrap;
 }
 
-/*タスク更新ダイアログ*/
+.study-date {
+    width: 120px;
+}
+
+.study-time {
+    width: 100px;
+}
+
+.action-cell {
+    width: 50px;
+}
+
+/*学習更新ダイアログ*/
 #updateDialog {
     display: none;
-    background-color: #FFFFFF;
-    border: 2px double;
-    width: 500px;
+    width: 90%;
+    max-width: 500px;
     position: fixed;
-    top: 120px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 9999;
 }

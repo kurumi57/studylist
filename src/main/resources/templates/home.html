@@ -1,58 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>学習管理アプリケーション</title>
-  <link th:href="@{/home.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/home.css}" rel="stylesheet">
 </head>
 <body>
-<h1>学習管理アプリケーション</h1>
+<div class="container">
+    <div class="d-flex align-items-center flex-wrap my-4">
+        <h1>学習管理アプリケーション</h1>
 
-<p class="login-user">
-ログイン中：<span th:text="${username}"></span>
-</p>
+        <div class="login-area d-flex align-items-center gap-3 ms-auto">
+            <p class="login-user">
+                ログイン中：<span th:text="${username}"></span>
+            </p>
 
-<form th:action="@{/logout}" method="post" class="logout-form">
-  <button type="submit">ログアウト</button>
-</form>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn btn-outline-secondary">ログアウト</button>
+            </form>
+        </div>
+    </div>
 
-<div class="study_form">
-  <h2>&lt;学習の記録&gt;</h2>
+    <div class="study_form card p-3 mb-4">
+        <h2 class="mb-3">学習の記録</h2>
 
-  <form action="/add">
-    <label>学習日</label>
-    <input name="date" type="date" />
-    <label>学習内容</label>
-    <input name="content" type="text" />
-    <label>学習時間(分)</label>
-    <input id="studyMinutes" type="number" min="1" step="1" class="time-input" />
-    <input id="studyTime" name="time" type="hidden" />
+        <form th:action="@{/add}" method="post">
+            <label class="form-label">学習日</label>
+            <input name="date" type="date" class="form-control"/>
+            <label class="form-label">学習内容</label>
+            <input name="content" type="text" class="form-control"/>
+            <label class="form-label">学習時間(分)</label>
+            <input id="studyMinutes" type="number" min="1" step="1" class="form-control time-input"/>
+            <input id="studyTime" name="time" type="hidden"/>
 
-<div class="timer-buttons">
-    <button type="button" id="startButton">スタート</button>
-    <button type="button" id="finishButton">ストップ</button>
-    <button type="button" id="clearButton">クリア</button>
-    <p id="timerStatus"></p>
-  <p id="studyTimeDisplay"></p>
-</div>
-    <button type="submit" class="register-button">登録</button>
-  </form>
-</div>
+            <div class="timer-buttons">
+                <button type="button" id="startButton" class="btn btn-success">スタート</button>
+                <button type="button" id="finishButton" class="btn btn-danger">ストップ</button>
+                <button type="button" id="clearButton" class="btn btn-secondary">クリア</button>
+                <p id="timerStatus"></p>
+                <p id="studyTimeDisplay"></p>
+            </div>
+            <button type="submit" class="btn btn-primary register-button">登録</button>
+        </form>
+    </div>
 
-<div class="studylist">
-  <h2>&lt;学習一覧&gt;</h2>
-  <table border="1" style="border-collapse: collapse;">
-    <thead>
-    <tr><th class="hidden">ID</th><th>学習日</th><th>学習内容</th><th>学習時間</th></tr>
-    </thead>
-    <tbody>
-    <tr th:each="study : ${studyList}">
-    <td class="hidden" th:text="${study.id}"></td>
-    <td width="100px" th:text="${study.date}"></td>
-    <td th:text="${study.content}"></td>
-    <td width="100px" th:text="${study.formattedTime()}" th:attr="data-time=${study.time}"></td>
-      <td width="50px">
-        <button type="submit" id="update_button" onclick="
+    <div class="studylist card p-3">
+        <h2 class="mb-3">学習一覧</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle">
+                <thead class="text-center table-dark">
+                <tr>
+                    <th class="hidden">ID</th>
+                    <th>学習日</th>
+                    <th>学習内容</th>
+                    <th>学習時間</th>
+                    <th colspan="2">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="study : ${studyList}">
+                    <td class="hidden" th:text="${study.id}"></td>
+                    <td class="study-date text-nowrap" th:text="${study.date}"></td>
+                    <td th:text="${study.content}"></td>
+                    <td class="study-time text-nowrap" th:text="${study.formattedTime()}"
+                        th:attr="data-time=${study.time}"></td>
+                    <td class="action-cell">
+                        <button type="button" class="btn btn-warning" onclick="
         let row = this.parentElement.parentElement;
         getElementById('update_id').value=row.cells[0].firstChild.data;
         getElementById('update_date').value=row.cells[1].firstChild.data;
@@ -63,89 +77,93 @@
         getElementById('update_time').value = hours;
 
         var dialog = getElementById('updateDialog');
-        dialog.style.left = ((window.innerWidth - 500) / 2) + 'px';
         dialog.style.display = 'block';
-        ">更新</button>
-      </td>
-      <td width="50px">
-        <form action="/delete">
-          <button type="submit" id="delete_button">削除</button>
-          <input type="hidden" name="id" th:value="${study.id}" />
-        </form>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+        ">更新
+                        </button>
+                    </td>
+                    <td class="action-cell">
+                        <form th:action="@{/delete}" method="post">
+                            <button type="submit" class="btn btn-danger">削除</button>
+                            <input type="hidden" name="id" th:value="${study.id}"/>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="updateDialog" class="card p-4">
+        <div class="study_form">
+            <h2 class="mb-4">学習の更新</h2>
+            <form th:action="@{/update}" method="post">
+                <input id="update_id" name="id" type="hidden"/>
+                <label class="form-label">学習日</label>
+                <input id="update_date" name="date" type="date" class="form-control"/>
+                <label class="form-label">学習内容</label>
+                <input id="update_content" name="content" type="text" class="form-control"/>
+                <label class="form-label">学習時間(分)</label>
+                <input id="update_minutes" type="number" min="1" step="1" class="form-control"/>
+                <input id="update_time" name="time" type="hidden"/>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">更新</button>
+                    <button type="reset" class="btn btn-secondary"
+                            onclick="getElementById('updateDialog').style.display='none';">キャンセル
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        let startTime;
+        let finishTime;
+
+        document.getElementById("studyMinutes").addEventListener("input", function () {
+            let minutes = this.value;
+
+            document.getElementById("studyTime").value = minutes / 60;
+        })
+
+        document.getElementById("update_minutes").addEventListener("input", function () {
+            let minutes = this.value;
+
+            document.getElementById("update_time").value = minutes / 60;
+        })
+
+        document.getElementById("startButton").addEventListener("click", function () {
+            startTime = new Date();
+
+            document.getElementById("studyMinutes").value = "";
+            document.getElementById("studyTime").value = "";
+            document.getElementById("studyTimeDisplay").textContent = "";
+
+            document.getElementById("timerStatus").textContent = "計測中...";
+        });
+
+        document.getElementById("finishButton").addEventListener("click", function () {
+            finishTime = new Date();
+
+            let elapsedTime = finishTime - startTime;
+            let studyTime = (elapsedTime / 1000 / 60 / 60).toFixed(2);
+
+            let minutes = Math.floor(elapsedTime / 1000 / 60);
+            let seconds = Math.floor(elapsedTime / 1000 % 60);
+
+            document.getElementById("studyMinutes").value = minutes;
+            document.getElementById("studyTimeDisplay").textContent = minutes + "分" + seconds + "秒";
+            document.getElementById("studyTime").value = studyTime;
+            document.getElementById("timerStatus").textContent = "";
+        });
+
+        document.getElementById("clearButton").addEventListener("click", function () {
+            startTime = null;
+            finishTime = null;
+            document.getElementById("studyTimeDisplay").textContent = "";
+            document.getElementById("studyTime").value = "";
+            document.getElementById("timerStatus").textContent = "";
+            document.getElementById("studyMinutes").value = "";
+        })
+
+    </script>
 </div>
-<div id="updateDialog">
-  <div class="study_form">
-    <h2>学習の更新</h2>
-    <form action="/update">
-      <input id="update_id" name="id" type="hidden" />
-      <label>学習日</label>
-      <input id="update_date" name="date" type="date" />
-      <label>学習内容</label>
-      <input id="update_content" name="content" type="text" />
-      <label>学習時間</label>
-      <input id="update_minutes" type="number" min="1" step="1" />
-      <input id="update_time" name="time" type="hidden" />
-      <div>
-        <button type="submit">更新</button>
-        <button type="reset"
-                onclick="getElementById('updateDialog').style.display='none';">キャンセル</button>
-      </div>
-    </form>
-  </div>
-</div>
-<script>
-  let startTime;
-  let finishTime;
-
-  document.getElementById("studyMinutes").addEventListener("input", function () {
-    let minutes = this.value;
-
-    document.getElementById("studyTime").value = minutes / 60;
-  })
-
-  document.getElementById("update_minutes").addEventListener("input", function () {
-    let minutes = this.value;
-
-    document.getElementById("update_time").value = minutes / 60;
-  })
-
-  document.getElementById("startButton").addEventListener("click", function() {
-  startTime = new Date();
-
-  document.getElementById("studyMinutes").value = "";
-  document.getElementById("studyTime").value = "";
-  document.getElementById("studyTimeDisplay").textContent = "";
-
-  document.getElementById("timerStatus").textContent = "計測中...";
-  });
-
-  document.getElementById("finishButton").addEventListener("click", function () {
-    finishTime = new Date();
-
-  let elapsedTime = finishTime - startTime;
-  let studyTime = (elapsedTime / 1000 / 60 / 60).toFixed(2);
-
-  let minutes = Math.floor(elapsedTime / 1000 / 60);
-  let seconds = Math.floor(elapsedTime / 1000 % 60);
-
-  document.getElementById("studyMinutes").value = minutes;
-  document.getElementById("studyTimeDisplay").textContent = minutes + "分" + seconds + "秒";
-  document.getElementById("studyTime").value = studyTime;
-  document.getElementById("timerStatus").textContent = "";
-  });
-
-  document.getElementById("clearButton").addEventListener("click", function() {
-    startTime = null;
-    finishTime = null;
-    document.getElementById("studyTimeDisplay").textContent = "";
-    document.getElementById("studyTime").value = "";
-    document.getElementById("timerStatus").textContent = "";
-  })
-
-</script>
 </body>
 </html>

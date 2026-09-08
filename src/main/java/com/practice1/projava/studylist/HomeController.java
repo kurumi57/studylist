@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.core.Authentication;
 
@@ -46,7 +47,7 @@ public String showStudyList(Model model, Authentication authentication) {
     return "home";
     }
 
-@GetMapping("/add")
+@PostMapping("/add")
     String addRecord(@RequestParam("date") String date,
     @RequestParam("content") String content,
     @RequestParam("time") String time,
@@ -61,7 +62,7 @@ public String showStudyList(Model model, Authentication authentication) {
 
         return "redirect:/list";
 }
-@GetMapping("/delete")
+@PostMapping("/delete")
     String deleteItem(@RequestParam("id") String id,
         Authentication authentication) {
 
@@ -70,7 +71,7 @@ public String showStudyList(Model model, Authentication authentication) {
         dao.delete(id, username);
         return "redirect:/list";
 }
-@GetMapping("/update")
+@PostMapping("/update")
     String updateItem(@RequestParam("id") String id,
                       @RequestParam("date") LocalDate date,
                       @RequestParam("content") String content,
