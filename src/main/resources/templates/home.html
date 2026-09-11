@@ -25,14 +25,19 @@
     <div class="study_form card p-3 mb-4">
         <h2 class="mb-3">学習の記録</h2>
 
-        <form th:action="@{/add}" method="post">
+        <form th:action="@{/add}" method="post" th:object="${studyForm}">
             <label class="form-label">学習日</label>
-            <input name="date" type="date" class="form-control"/>
+            <input type="date" class="form-control" th:field="*{date}"/>
+            <p class="text-danger" th:errors="*{date}"></p>
+
             <label class="form-label">学習内容</label>
-            <input name="content" type="text" class="form-control"/>
+            <input type="text" class="form-control" th:field="*{content}"/>
+            <p class="text-danger" th:errors="*{content}"></p>
+
             <label class="form-label">学習時間(分)</label>
             <input id="studyMinutes" type="number" min="0" step="1" class="form-control time-input"/>
-            <input id="studyTime" name="time" type="hidden"/>
+            <input id="studyTime" type="hidden" th:field="*{time}"/>
+            <p class="text-danger" th:errors="*{time}"></p>
 
             <div class="timer-buttons">
                 <button type="button" id="startButton" class="btn btn-success">スタート</button>
@@ -62,13 +67,13 @@
                 <tr th:each="study : ${studyList}">
                     <td class="hidden" th:text="${study.id}"></td>
                     <td class="study-date text-nowrap" th:text="${study.date}"></td>
-                    <td th:text="${study.content}"></td>
+                    <td class="study-content" th:text="${study.content}"></td>
                     <td class="study-time text-nowrap" th:text="${study.formattedTime()}"
                         th:attr="data-time=${study.time}"></td>
                     <td class="action-cell">
-                        <div class="d-flex gap-5 justify-content-center">
+                        <div class="d-flex gap-3 justify-content-center">
                         <button type="button" class="btn btn-warning" onclick="
-        let row = this.parentElement.parentElement;
+        let row = this.closest('tr');
         getElementById('update_id').value=row.cells[0].firstChild.data;
         getElementById('update_date').value=row.cells[1].firstChild.data;
         getElementById('update_content').value=row.cells[2].firstChild.data;
