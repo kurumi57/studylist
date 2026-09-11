@@ -50,6 +50,7 @@ public class HomeController {
         model.addAttribute("studyList", studyItems);
         model.addAttribute("username", username);
         model.addAttribute("studyForm", new StudyForm());
+        model.addAttribute("updateForm", new StudyForm());
         return "home";
     }
 
@@ -85,13 +86,28 @@ public class HomeController {
     }
 
     @PostMapping("/update")
-    String updateItem(@RequestParam("id") String id,
-                      @RequestParam("date") LocalDate date,
-                      @RequestParam("content") String content,
-                      @RequestParam("time") Double time,
-                      Authentication authentication) {
+    String updateItem(@Valid @ModelAttribute("updateForm") StudyForm form,
+                      BindingResult bindingResult,
+                      Authentication authentication,
+                      Model model) {
+
         String username = authentication.getName();
-        StudyItem studyItem = new StudyItem(id, date, content, time, username);
+        if (bindingResult.hasErrors()) {
+            List<StudyItem> studyItems = dao.findByUsername(username);
+            model.addAttribute("studyList", studyItems);
+            model.addAttribute("username", username);
+            model.addAttribute("studyForm", new StudyForm());
+            model.addAttribute("updateError", true);
+            return "home";
+        }
+        StudyItem studyItem = new StudyItem(
+                form.getId(),
+                form.getDate(),
+                form.getContent(),
+                form.getTime(),
+                username
+        );
+
         dao.update(studyItem);
         return "redirect:/list";
     }

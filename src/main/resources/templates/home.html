@@ -35,7 +35,7 @@
             <p class="text-danger" th:errors="*{content}"></p>
 
             <label class="form-label">学習時間(分)</label>
-            <input id="studyMinutes" type="number" min="0" step="1" class="form-control time-input"/>
+            <input id="studyMinutes" type="number" min="1" step="1" class="form-control time-input"/>
             <input id="studyTime" type="hidden" th:field="*{time}"/>
             <p class="text-danger" th:errors="*{time}"></p>
 
@@ -100,15 +100,21 @@
     <div id="updateDialog" class="card p-4">
         <div class="study_form">
             <h2 class="mb-4">学習の更新</h2>
-            <form th:action="@{/update}" method="post">
-                <input id="update_id" name="id" type="hidden"/>
+            <form th:action="@{/update}" method="post" th:object="${updateForm}">
+                <input id="update_id" type="hidden" th:field="*{id}"/>
                 <label class="form-label">学習日</label>
-                <input id="update_date" name="date" type="date" class="form-control"/>
+                <input id="update_date" type="date" class="form-control" th:field="*{date}"/>
+                <p class="text-danger" th:errors="*{date}"></p>
+
                 <label class="form-label">学習内容</label>
-                <input id="update_content" name="content" type="text" class="form-control"/>
+                <input id="update_content" type="text" class="form-control" th:field="*{content}"/>
+                <p class="text-danger" th:errors="*{content}"></p>
+
                 <label class="form-label">学習時間(分)</label>
-                <input id="update_minutes" type="number" min="0" step="1" class="form-control"/>
-                <input id="update_time" name="time" type="hidden"/>
+                <input id="update_minutes" type="number" min="1" step="1" class="form-control"/>
+                <input id="update_time" type="hidden" th:field="*{time}"/>
+                <p class="text-danger" th:errors="*{time}"></p>
+
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">更新</button>
                     <button type="reset" class="btn btn-secondary"
@@ -131,7 +137,11 @@
         document.getElementById("update_minutes").addEventListener("input", function () {
             let minutes = this.value;
 
-            document.getElementById("update_time").value = minutes / 60;
+            if (minutes === "") {
+                document.getElementById("update_time").value = "";
+            } else {
+                document.getElementById("update_time").value = minutes / 60;
+            }
         })
 
         document.getElementById("startButton").addEventListener("click", function () {
@@ -179,6 +189,9 @@
             document.getElementById("studyMinutes").value = "";
         })
 
+        if([[${updateError == true}]]) {
+            document.getElementById('updateDialog').style.display = 'block';
+        }
     </script>
 </div>
 </body>

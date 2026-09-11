@@ -74,6 +74,10 @@ body {
     z-index: 9999;
 }
 
+#updateDialog button {
+    white-space: nowrap;
+}
+
 /*エラー表示*/
 .text-danger {
     white-space: nowrap;

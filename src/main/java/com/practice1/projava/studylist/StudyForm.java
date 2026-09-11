@@ -2,13 +2,23 @@ package com.practice1.projava.studylist;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Positive;
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
 public class StudyForm {
+
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @NotNull(message = "学習日を入力してください")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -19,7 +29,7 @@ public class StudyForm {
     private String content;
 
     @NotNull(message = "学習時間を入力してください")
-    @PositiveOrZero(message = "学習時間は0以上で入力してください")
+    @Positive(message = "学習時間は0より大きい値で入力してください")
     private Double time;
 
     public LocalDate getDate() {
