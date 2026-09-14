@@ -12,15 +12,17 @@
     <div class="card p-4 mx-auto mt-5 col-12 col-md-6">
         <h1 class="text-center mb-4">新規ユーザー登録</h1>
 
-        <form th:action="@{/register}" method="post">
+        <form th:action="@{/register}" method="post" th:object="${registerForm}">
             <div class="mb-3">
                 <label>ユーザー名</label>
-                <input type="text" name="username" class="form-control">
+                <input type="text" class="form-control" th:field="*{username}">
+                <p class="text-danger" th:errors="*{username}"></p>
             </div>
 
             <div class="mb-3">
                 <label>パスワード</label>
-                <input type="password" name="password" class="form-control">
+                <input type="password" class="form-control" th:field="*{password}">
+                <p class="text-danger" th:errors="*{password}"></p>
             </div>
             <button type="submit" class="btn btn-primary w-100">登録</button>
 
