@@ -1,10 +1,12 @@
-package com.practice1.projava.studylist;
+package com.practice1.projava.studylist.form;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * ユーザー登録画面で入力されたユーザー名とパスワードを受け取るフォームクラス
+ */
 public class RegisterForm {
-
 
     @NotBlank(message = "ユーザー名を入力してください")
     @Size(max = 50, message = "ユーザー名は50文字以内で入力してください")

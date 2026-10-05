@@ -72,7 +72,7 @@
                         th:attr="data-time=${study.time}"></td>
                     <td class="action-cell">
                         <div class="d-flex gap-3 justify-content-center">
-                        <button type="button" class="btn btn-warning" onclick="
+                            <button type="button" class="btn btn-warning" onclick="
         let row = this.closest('tr');
         getElementById('update_id').value=row.cells[0].firstChild.data;
         getElementById('update_date').value=row.cells[1].firstChild.data;
@@ -85,11 +85,11 @@
         var dialog = getElementById('updateDialog');
         dialog.style.display = 'block';
         ">更新
-                        </button>
-                        <form th:action="@{/delete}" method="post">
-                            <button type="submit" class="btn btn-danger">削除</button>
-                            <input type="hidden" name="id" th:value="${study.id}"/>
-                        </form>
+                            </button>
+                            <form th:action="@{/delete}" method="post">
+                                <button type="submit" class="btn btn-danger">削除</button>
+                                <input type="hidden" name="id" th:value="${study.id}"/>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -189,7 +189,9 @@
             document.getElementById("studyMinutes").value = "";
         })
 
-        if([[${updateError == true}]]) {
+        if ([[${updateError == true}
+        ]])
+        {
             document.getElementById('updateDialog').style.display = 'block';
         }
     </script>
